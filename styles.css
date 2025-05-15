@@ -1,0 +1,20 @@
+body {
+    padding-top: 56px;
+}
+.sidebar {
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+    overflow-y: auto;
+}
+pre {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #0d6efd;
+}
+.nav-link.active {
+    font-weight: bold;
+    color: #0d6efd !important;
+    background-color: #f8f9fa;
+}
