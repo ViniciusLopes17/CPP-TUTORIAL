@@ -1679,7 +1679,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('year').textContent = new Date().getFullYear();
     
     // Load default section (home)
-    showSection('home');
+    showSection('intro');
     
     // Initialize sidebar navigation
     initSidebar();
