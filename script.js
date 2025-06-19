@@ -572,49 +572,6 @@ const tutorialData = {
                         <strong>Warning:</strong> C++ doesn't check array bounds. Accessing primes[5] would cause undefined behavior!
                     </div>
                 `
-            },
-            {
-                id: "variables",
-                title: "Variables and Data Types",
-                content: `
-                    <p>Basic data types in C++:</p>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Example</th>
-                                <th>Size</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>int</td>
-                                <td>int age = 25;</td>
-                                <td>4 bytes</td>
-                            </tr>
-                            <tr>
-                                <td>float</td>
-                                <td>float price = 9.99;</td>
-                                <td>4 bytes</td>
-                            </tr>
-                            <tr>
-                                <td>double</td>
-                                <td>double pi = 3.14159;</td>
-                                <td>8 bytes</td>
-                            </tr>
-                            <tr>
-                                <td>char</td>
-                                <td>char grade = 'A';</td>
-                                <td>1 byte</td>
-                            </tr>
-                            <tr>
-                                <td>bool</td>
-                                <td>bool isTrue = true;</td>
-                                <td>1 byte</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                `
             }
         ]
     },
@@ -1678,23 +1635,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set copyright year
     document.getElementById('year').textContent = new Date().getFullYear();
     
-    // Load default section (home)
-    showSection('intro');
-    
-    // Initialize sidebar navigation
-    initSidebar();
+    // Load home section by default
+    loadHomeSection();
 });
 
-// Show a specific section
-function showSection(sectionId) {
-    const section = tutorialData[sectionId];
-    if (!section) return;
-    
-    // Update active nav link
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    event.target.classList.add('active');
+// Function to load the home section
+function loadHomeSection() {
+    const section = tutorialData.home;
     
     // Build HTML content
     let html = `<h1 class="mb-4">${section.title}</h1>`;
@@ -1711,34 +1658,40 @@ function showSection(sectionId) {
     
     document.getElementById('main-content').innerHTML = html;
     
-    // Update sidebar active item
-    updateSidebarActiveItem();
+    // Set home nav link as active
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.textContent.trim() === "Home") {
+            link.classList.add('active');
+        }
+    });
 }
 
-// Initialize sidebar navigation
-function initSidebar() {
-    const sidebarNav = document.getElementById('sidebar-nav');
-    let sidebarHtml = '';
+// Function to show other sections
+function showSection(sectionId) {
+    const section = tutorialData[sectionId];
+    if (!section) return;
     
-    // Add links for all sections
-    Object.keys(tutorialData).forEach(sectionId => {
-        const section = tutorialData[sectionId];
-        sidebarHtml += `
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="showSection('${sectionId}')">
-                    ${section.title}
-                </a>
-            </li>
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('onclick')?.includes(sectionId)) {
+            link.classList.add('active');
+        }
+    });
+    
+    // Build HTML content
+    let html = `<h1 class="mb-4">${section.title}</h1>`;
+    
+    section.sections.forEach(sec => {
+        html += `
+            <section id="${sec.id}" class="mb-5">
+                <h2 class="h4 mb-3">${sec.title}</h2>
+                ${sec.content}
+            </section>
+            <hr>
         `;
     });
     
-    sidebarNav.innerHTML = sidebarHtml;
-}
-
-// Update active item in sidebar
-function updateSidebarActiveItem() {
-    document.querySelectorAll('#sidebar-nav .nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    event.target.classList.add('active');
+    document.getElementById('main-content').innerHTML = html;
 }
